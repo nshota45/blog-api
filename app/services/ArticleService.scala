@@ -1,16 +1,18 @@
 package services
 
-import models.Article
+import models.{Article, ArticlesAndCount}
 
 import scala.concurrent.Future
 
 trait ArticleService {
 
-  /** 記事全件取得
+  /** 記事一覧表示
     *
+    * @param page 現在のページ
+    * @param perPage 1ページに表示する記事の件数
     * @return
     */
-  def findAllArticles: Future[Seq[Article]]
+  def findArticles(page: Int, perPage: Int): Future[ArticlesAndCount]
 
   /** 記事取得
     *

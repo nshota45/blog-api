@@ -1,7 +1,7 @@
 GET     /                           controllers.HomeController.index
 
 
-GET     /article/all                controllers.ArticleController.articles
+GET     /articles/:page             controllers.ArticleController.articles(page: Int)
 GET     /article/:id                controllers.ArticleController.article(id: Long)
 POST    /article/register           controllers.ArticleController.register
 

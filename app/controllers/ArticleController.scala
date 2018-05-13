@@ -3,7 +3,6 @@ package controllers
 import javax.inject._
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import org.json4s.NoTypeHints
 import org.json4s.native.Serialization
 import org.json4s.native.Serialization.write
@@ -20,9 +19,12 @@ class ArticleController @Inject()(
 ) extends AbstractController(cc) {
 
   private implicit val formats = Serialization.formats(NoTypeHints)
+  private val perPage = 5
 
-  def articles = baseAction.async { implicit request: Request[AnyContent] =>
-    service.findAllArticles.map { articles => Ok(write(articles)) }
+  def articles(page: Int) = baseAction.async { implicit request: Request[AnyContent] =>
+    service.findArticles(page, perPage).map { articlesAndCount =>
+      Ok(write(articlesAndCount))
+    }
   }
 
   def article(id: Long) = baseAction.async { implicit request: Request[AnyContent] =>
@@ -30,8 +32,7 @@ class ArticleController @Inject()(
   }
 
   def register = baseAction.async { implicit request: Request[AnyContent] =>
-    // todo implement
-    Future(Redirect("/"))
+    service.registerArticle(article = null /* todo */).map { _ => Ok("{}")}
   }
 
 }
